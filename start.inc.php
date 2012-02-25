@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (C) year Vanduir Volpato Maia
  * 
  * This library is free software; you can redistribute it and/or modify it under the 
