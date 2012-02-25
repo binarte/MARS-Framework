@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) year Vanduir Volpato Maia
+ * Copyright (C) 2012 Vanduir Volpato Maia
  * 
  * This library is free software; you can redistribute it and/or modify it under the 
  * terms of the GNU Lesser General Public License as published by the Free Software 
