@@ -38,9 +38,9 @@ abstract class ReadableObject extends Object {
 	 * "get_<property name>"
 	 * @param string $p Name of the property
 	 * @return mixed Value of the property 
-	 * @todo This method uses a very hack-y way of detecting if the preperty is present 
-	 * or not. If PHP implements a way of finding out if a property is private in the 
-	 * future, replacing it would be ideal.
+	 * @todo LOW PRORITY: This method uses a very hack-y way of detecting if the property 
+	 * is present or not. If PHP implements a simple way of finding out if a property is 
+	 * private in the future, replacing it would be ideal.
 	 * @uses Manager::simpleError_start
 	 * @uses Manager::simpleError_end
 	 * @internal
@@ -63,9 +63,9 @@ abstract class ReadableObject extends Object {
 	 * "isset_<property name>"
 	 * @param string $p Name of the attribute
 	 * @return bool <b>TRUE</b> if the property is non-null, <b>FALSE</b> if otherwise
-	 * @todo This method uses a very hack-y way of detecting if the preperty is present 
-	 * or not. If PHP implements a way of finding out if a property is private in the 
-	 * future, replacing it would be ideal.
+	 * @todo LOW PRORITY: This method uses a very hack-y way of detecting if the property 
+	 * is present or not. If PHP implements a simple way of finding out if a property is 
+	 * private in the future, replacing it would be ideal.
 	 * @uses Manager::simpleError_start
 	 * @uses Manager::simpleError_end
 	 * @internal

@@ -112,7 +112,7 @@ class AcceptHeader extends Object implements \IteratorAggregate {
 	 * @param string $name Name of the entry to search
 	 * @return AcceptHeaderComponent If a proper entry is found, it is returned. 
 	 * Otherwise, returns <b>NULL</b>
-	 * @todo Implement parameter preference
+	 * @todo LOW PRORITY: Implement parameter preference
 	 */
 	public function find($name) {
 		$name = strtolower($name);
