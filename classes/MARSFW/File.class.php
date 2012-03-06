@@ -17,6 +17,9 @@
 
 namespace MARS;
 
+/**
+ * @todo make this a wrapperobject and finish documentation 
+ */
 class File extends Object{
 
 	private $handler;
