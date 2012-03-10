@@ -9,7 +9,7 @@ echo '<pre>';
 var_dump ($_GET,$_POST);
 echo '</pre>';
 
-$oa = new API\Client\OAuth2('https://www.deviantart.com/oauth2/draft15/',149,'e641092e669e8b9d8486ca20310bca4e');
+$oa = new API\Client\OAuth2('https://www.deviantart.com/oauth2/draft15/',149,'***');
 
 $oa->redirect=$prot[0].'://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
 $oa->grantType = 'authorization_code';
