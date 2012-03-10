@@ -81,6 +81,8 @@ final class Manager extends Object {
 	 * surtirão efeito.
 	 * @param string $path Caminho inicial
 	 * @param bool $log_deprecated Define se erros de depreciação devem ser logados
+	 * @todo fix excoptions throws without a stack frame and re-enable custom error 
+	 * reporting
 	 */
 	public static function init($path, $log_deprecated = false) {
 		if (count(self::$paths)) {
@@ -93,8 +95,8 @@ final class Manager extends Object {
 		self::$deprecatedErrors = E_DEPRECATED | E_USER_DEPRECATED | E_STRICT;
 		self::$logDeprecated = $log_deprecated;
 		
-		set_error_handler(__CLASS__ . '::errorHandler');
-		set_exception_handler(__CLASS__ . '::exceptionHandler');
+	//	set_error_handler(__CLASS__ . '::errorHandler');
+	//	set_exception_handler(__CLASS__ . '::exceptionHandler');
 		error_reporting(0x7fffffff);
 	}
 

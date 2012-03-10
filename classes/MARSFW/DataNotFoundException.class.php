@@ -15,10 +15,8 @@
  * Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace MailMan\Database;
+namespace MARSFW;
+declare (encoding='UTF-8');
 
-interface Result {
-	function fetch();
-	function fetchNum();
-	function fetchBoth();
+class DataNotFoundException extends Exception {
 }

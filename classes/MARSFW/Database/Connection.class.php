@@ -15,7 +15,8 @@
  * Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace MailMan\Database;
+namespace MARSFW\Database;
+declare (encoding='UTF-8');
 
 abstract class Connection {
 
@@ -128,4 +129,10 @@ class MissingDataException extends Exception {
  */
 class DataAlreadyExistsException extends Exception {
 
+}
+
+interface Result {
+	function fetch();
+	function fetchNum();
+	function fetchBoth();
 }
