@@ -16,7 +16,7 @@
  * Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-namespace MARSFW\API\Client;
+namespace MARSFW\Connectivity;
 
 declare (encoding = "UTF-8");
 /*
@@ -29,7 +29,7 @@ declare (encoding = "UTF-8");
  *
  * @author vanduirvm
  */
-class OAuth2 extends Request {
+class OAuth2 extends \MARSFW\ReadWriteObject{
 
 	const METHOD_GET = 1;
 	const METHOD_POST = 2;
@@ -109,11 +109,9 @@ class OAuth2 extends Request {
 	}
 
 	private function executeRequest($url, $parameters = array(), $http_method = self::HTTP_METHOD_GET, array $http_headers = null, $form_content_type = self::HTTP_FORM_CONTENT_TYPE_MULTIPART) {
-		$parameters['format'] = 'xml';
+		//$parameters['format'] = 'xml';
 		
-		var_dump ($parameters);
-		
-		$curlopt = array(CURLOPT_URL=>$url);
+		$curlopt = array();
 		
 
 		switch ($this->method) {
@@ -123,10 +121,10 @@ class OAuth2 extends Request {
 				if (is_array($parameters) && 0 === $form_content_type) {
 					$parameters = http_build_query($parameters);
 				}
-				$curl_options[CURLOPT_POSTFIELDS] = $parameters;
+				$curlopt[CURLOPT_POSTFIELDS] = $parameters;
 				break;
 			case self::METHOD_HEAD:
-				$curl_options[CURLOPT_NOBODY] = true;
+				$curlopt[CURLOPT_NOBODY] = true;
 			case self::METHOD_DELETE:
 			case self::METHOD_GET:
 				if (is_array($parameters)) {
@@ -138,6 +136,8 @@ class OAuth2 extends Request {
 			default:
 				break;
 		}
+		
+		$curlopt[CURLOPT_URL]=$url;
 
 		if (is_array($http_headers)) {
 			$header = array();
@@ -147,18 +147,21 @@ class OAuth2 extends Request {
 			$curlopt[CURLOPT_HTTPHEADER] = $header;
 		}
 
+		var_dump ($parameters);
+		var_dump ($curlopt);
+		
 		curl_setopt_array($this->curlHandler, $curlopt);
 
 		$result = $this->curl->execThrow();
 
-		return new OAuth2Response(
+		return Array(
 			curl_getinfo($this->curlHandler, CURLINFO_CONTENT_TYPE),
 			$result
 		);
 	}
 
 }
-
+/*
 class OAuth2Response extends Response {
 
 	protected $contentType;
@@ -169,4 +172,4 @@ class OAuth2Response extends Response {
 		$this->result = $result;
 	}
 
-}
+}*/

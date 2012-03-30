@@ -18,7 +18,7 @@
 namespace MARS;
 
 /**
- * @todo make this a wrapperobject and finish documentation 
+ * @todo MEDIUM PRIORITY: make this a wrapperobject and finish documentation 
  */
 class File extends Object{
 

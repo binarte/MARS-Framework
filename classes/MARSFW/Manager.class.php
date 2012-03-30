@@ -16,7 +16,6 @@
  */
 
 namespace MARSFW;
-
 declare (encoding = "UTF-8");
 
 /**
@@ -81,7 +80,7 @@ final class Manager extends Object {
 	 * surtirão efeito.
 	 * @param string $path Caminho inicial
 	 * @param bool $log_deprecated Define se erros de depreciação devem ser logados
-	 * @todo fix excoptions throws without a stack frame and re-enable custom error 
+	 * @todo HIGH PRIORITY: fix excoptions throws without a stack frame and re-enable custom error 
 	 * reporting
 	 */
 	public static function init($path, $log_deprecated = false) {
@@ -189,7 +188,12 @@ final class Manager extends Object {
 
 	public static function logError(\Exception $ex) {
 		if (empty(self::$logh)) {
-			self::$logh = new Manager_ErrorLog(self::$paths[0], date('Ymd', self::$startTime));
+			try {
+				self::$logh = new Manager_ErrorLog(self::$paths[0], date('Ymd', self::$startTime));
+			}
+			catch(Exception $ex2){
+				die('Unable to open log file:' . $ex2->getMessage() );
+			}
 		}
 
 		self::$logh->add($ex);
@@ -408,3 +412,6 @@ class Manager_ErrorLog {
 	}
 
 }
+
+
+

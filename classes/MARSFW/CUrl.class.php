@@ -271,7 +271,7 @@ class CUrl extends WrapperObject {
 	 * @see setOptArray()
 	 */
 	function __construct($url = null){
-		$this->handler = curl_init($url);
+		$this->handler = \curl_init($url);
 	}
 	
 	/**
@@ -279,7 +279,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_close()
 	 */
 	function __destruct(){
-		curl_close($this->handler);
+		\curl_close($this->handler);
 	}
 	
 	/**
@@ -290,7 +290,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_getinfo()
 	 */
 	function __get($attr){
-		return curl_getinfo($this->handler,constant('CURLINFO_'.strtoupper($attr) ) );
+		return \curl_getinfo($this->handler,constant('CURLINFO_'.strtoupper($attr) ) );
 	}
 	
 	/**
@@ -301,7 +301,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_setopt()
 	 */
 	function __set($attr,$value){
-		curl_setopt($this->handler,constant('CURLOPT_'.strtoupper($attr) ),$value);
+		\curl_setopt($this->handler,constant('CURLOPT_'.strtoupper($attr) ),$value);
 	}
 	
 	/**
@@ -309,7 +309,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_copy_handle()
 	 */
 	function __clone(){
-		$this->handler = curl_copy_handle($this->handler);
+		$this->handler = \curl_copy_handle($this->handler);
 	}
 	
 	/**
@@ -320,7 +320,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_error()
 	 */
 	function error(){
-		return curl_error($this->handler,$option);
+		return \curl_error($this->handler,$option);
 	}
 	
 	/**
@@ -330,7 +330,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_errNo()
 	 */
 	function errNo(){
-		return curl_errno($this->handler,$option);
+		return \curl_errno($this->handler,$option);
 	}
 	
 	/**
@@ -343,8 +343,8 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_getinfo()
 	 */
 	function getInfo($option = null){
-		if (func_num_args () ) return curl_getinfo($this->handler,$option);
-		return curl_getinfo($this->handler);
+		if (func_num_args () ) return \curl_getinfo($this->handler,$option);
+		return \curl_getinfo($this->handler);
 	}
 	
 	/**
@@ -355,7 +355,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_setopt()
 	 */
 	function setOpt($option,$value){
-		return curl_setopt($this->handler,$option,$value);
+		return \curl_setopt($this->handler,$option,$value);
 	}
 	
 	/**
@@ -365,7 +365,7 @@ class CUrl extends WrapperObject {
 	 * @uses \curl_setopt_array()
 	 */
 	function setOptArray(Array $value){
-		return curl_setopt_array($this->handler,$value);
+		return \curl_setopt_array($this->handler,$value);
 	}
 	
 	/**
@@ -373,7 +373,7 @@ class CUrl extends WrapperObject {
 	 * @return mixed
 	 */
 	function exec(){
-		return curl_exec($this->handler);
+		return \curl_exec($this->handler);
 	}	
 	
 	/**
@@ -383,8 +383,8 @@ class CUrl extends WrapperObject {
 	 * @throws CUrlException Will be thrown if an error occurs on the cURL operation.
 	 */
 	function execThrow(){
-		$ret = curl_exec($this->handler);
-		$e = curl_errno($this->handler);
+		$ret = \curl_exec($this->handler);
+		$e = \curl_errno($this->handler);
 		if ($e){
 			throw new CUrlException(\curl_error($this->handler),$e);
 		}

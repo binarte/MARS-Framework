@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2012 Vanduir Volpato Maia
  * 
@@ -28,6 +29,7 @@ declare (encoding = "UTF-8");
  * </code>
  */
 class AcceptHeader extends Object implements \IteratorAggregate {
+
 	const GENERAL = 0;
 	const MIME = 1;
 	const LANGUAGE = 2;
@@ -133,10 +135,10 @@ class AcceptHeader extends Object implements \IteratorAggregate {
 
 		foreach ($this->components as $component) {
 			if (isset($possible[$component->name])
-				and (
-				empty($best) or
-				$possible[$component->name] > $possible[$best->name]
-				)
+					and (
+					empty($best) or
+					$possible[$component->name] > $possible[$best->name]
+					)
 			) {
 				$best = $component;
 			}
@@ -148,8 +150,7 @@ class AcceptHeader extends Object implements \IteratorAggregate {
 		if ($this->dataType == self::LANGUAGE) {
 			if (($p = \strpos($name, '-')) !== false) {
 				$name = \substr($name, 0, $p);
-			}
-			elseif (($p = \strpos($name, '_')) !== false) {
+			} elseif (($p = \strpos($name, '_')) !== false) {
 				$name = \substr($name, 0, $p);
 			}
 
@@ -157,8 +158,7 @@ class AcceptHeader extends Object implements \IteratorAggregate {
 				$tname = $component->name;
 				if (($p = \strpos($tname, '-')) !== false) {
 					$tname = \substr($tname, 0, $p);
-				}
-				elseif (($p = \strpos($tname, '_')) !== false) {
+				} elseif (($p = \strpos($tname, '_')) !== false) {
 					$tname = \substr($tname, 0, $p);
 				}
 
