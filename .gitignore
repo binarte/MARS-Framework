@@ -1,4 +1,9 @@
 /tests/apps.ini
-/tests/
 !/tests/facebook/
 !/tests/fbtest.php
+/tests/oa.php
+/tests/mb.php
+/tests/OA.php
+/tests/accepth.php
+/tests/substr.php
+/tests/DA/
