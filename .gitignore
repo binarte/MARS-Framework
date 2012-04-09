@@ -1,0 +1,4 @@
+/tests/apps.ini
+/tests/
+!/tests/facebook/
+!/tests/fbtest.php

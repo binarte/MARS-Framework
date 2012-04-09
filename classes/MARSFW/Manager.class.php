@@ -16,7 +16,6 @@
  */
 
 namespace MARSFW;
-declare (encoding = "UTF-8");
 
 /**
  * Gerenciador de recursos e erros do framework.
@@ -94,8 +93,8 @@ final class Manager extends Object {
 		self::$deprecatedErrors = E_DEPRECATED | E_USER_DEPRECATED | E_STRICT;
 		self::$logDeprecated = $log_deprecated;
 		
-	//	set_error_handler(__CLASS__ . '::errorHandler');
-	//	set_exception_handler(__CLASS__ . '::exceptionHandler');
+		set_error_handler(__CLASS__ . '::errorHandler');
+		set_exception_handler(__CLASS__ . '::exceptionHandler');
 		error_reporting(0x7fffffff);
 	}
 

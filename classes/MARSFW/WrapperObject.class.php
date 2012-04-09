@@ -17,8 +17,6 @@
 
 namespace MARSFW;
 
-declare (encoding = "UTF-8");
-
 /**
  * Abstract class for wrapping handlers that are structure-based rather than object-based
  * in the PHP core.

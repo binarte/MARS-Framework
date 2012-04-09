@@ -16,7 +16,6 @@
  */
 
 namespace MARSFW;
-declare(encoding="UTF-8");
 
 /*
  * To change this template, choose Tools | Templates

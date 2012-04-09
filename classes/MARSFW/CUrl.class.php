@@ -17,8 +17,6 @@
 
 namespace MARSFW;
 
-declare (encoding = "UTF-8");
-
 /**
  * Manages CUrl operation.
  * This class wraps curl_* functions for easy URL handling. Only single handlers here, 

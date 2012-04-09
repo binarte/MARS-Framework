@@ -15,14 +15,19 @@
  * Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-declare(encoding = 'UTF-8');
-
-	const _MARSFW_ = '_MARSFW_';
+const _MARSFW_ = '_MARSFW_';
 if (!isset ($_SERVER['REQUEST_TIME_FLOAT'])){
 	$t = microtime();
 	$t = explode(' ', $t);
 	$_SERVER['REQUEST_TIME'] = (int) $t[1];
-	$_SERVER['REQUEST_TIME_FLOAT'] = (float) $t[0]+$t[1];	
+	$_SERVER['REQUEST_TIME_FLOAT'] = (float) $t[0]+$t[1];		
+}
+
+if (isset ($default_timezone) ){
+	date_default_timezone_set($default_timezone);
+}
+elseif (!ini_get('date.timezone') ){
+	date_default_timezone_set('UTC');
 }
 
 if (isset ($session_name) ){
@@ -42,6 +47,7 @@ function __autoload($classname) {
 	MARSFW\Manager::loadClass($classname);
 }
 
+require __DIR__ . '/lib/main.lib.php';
 require __DIR__ . '/classes/MARSFW/Object.class.php';
 require __DIR__ . '/classes/MARSFW/Manager.class.php';
 
