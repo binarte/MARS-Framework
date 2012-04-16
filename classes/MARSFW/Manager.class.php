@@ -326,7 +326,7 @@ class Manager_ErrorLog {
 						break;
 					case E_WARNING:
 					case E_USER_WARNING:
-						fwrite($this->handler, 'E_ERROR');
+						fwrite($this->handler, 'E_WARNING');
 						break;
 					case E_NOTICE:
 					case E_USER_NOTICE:
