@@ -18,6 +18,34 @@ namespace MARSFW;
 class String extends ReadableObject implements \ArrayAccess {
 
 	/**
+	 * Decodes an encoded ascii string and return it's equivalent object
+	 * @param string $str Thi ascii-encoded string
+	 * @return String 
+	 * @throws \RuntimeException When the encoding is not valid
+	 * @link http://tools.ietf.org/html/rfc2047
+	 */
+	static function decodeAscii($str) {
+		$str = trim($str);
+		$str = substr($str, 2, strlen($str) - 4);
+		$str = explode('?', $str);
+		switch ($str[1]) {
+			case 'b':
+			case 'B':
+				$cont = \base64_decode($str[2]);
+				break;
+			case 'q':
+			case 'Q':
+				$cont = \quoted_printable_decode($str[2]);
+				$cont = \str_replace('_', ' ', $cont);
+				break;
+			default:
+				throw new \RuntimeException("Unknown ASCII encoding '{$str[1]}'");
+		}
+
+		return new String($cont, $str[0]);
+	}
+
+	/**
 	 * Content of the string
 	 * @var string 
 	 */
@@ -122,11 +150,11 @@ class String extends ReadableObject implements \ArrayAccess {
 	}
 
 	/**
-	 * Returns the string content
+	 * Returns the string content in UTF-8
 	 * @return string Content of the string
 	 */
 	function __toString() {
-		return $this->content;
+		return $this->toString('UTF-8');
 	}
 
 	/**
@@ -150,6 +178,22 @@ class String extends ReadableObject implements \ArrayAccess {
 	 */
 	function toEncoding($encoding) {
 		return new String($this->toString($encoding), $encoding, $this->caseSensitive);
+	}
+
+	function toAscii() {
+		if (!\preg_match('#[\200-\377]#', $this->content)) {
+			return $this->content;
+		}
+
+		$qcont = \quoted_printable_encode($this->content);
+		$qcont = \str_replace(array(' ','_'),array('_','=5f'), $qcont);
+		
+		return '=?'.$this->encoding.'?Q?'.$qcont.'?=';
+	}
+
+	function toAsciiB() {
+		$qcont = \base64_encode($this->content);
+		return '=?'.$this->encoding.'?B?'.$qcont.'?=';
 	}
 
 	/**
