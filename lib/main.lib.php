@@ -81,7 +81,8 @@ function base128_encode($str) {
 			if (isset($str[$i + $c])) {
 				$intv |= ord($str[$i + $c]);
 			}
-			else $pad++;
+			else
+				$pad++;
 		}
 		$part = '';
 		for ($c = 0; $c < 8; $c++) {
@@ -98,7 +99,7 @@ function base128_encode($str) {
 		$out .= $part;
 	}
 	$length = strlen($out);
-	for ($i = 1; $i <= $pad; $i++){
+	for ($i = 1; $i <= $pad; $i++) {
 		$out[$length - $i] = '=';
 	}
 	return $out;
@@ -115,16 +116,16 @@ function base128_decode($str) {
 			$intv <<= 7;
 			if (isset($str[$i + $c]) and $str[$i + $c] != '~') {
 				$chr = ord($str[$i + $c]);
-				if ($chr > 0x80){
+				if ($chr > 0x80) {
 					$chr -= 0x7f;
-				}
-				else {
+				} else {
 					$chr -= 0x3f;
 				}
-				
+
 				$intv |= $chr;
 			}
-			else $pad++;
+			else
+				$pad++;
 		}
 		$part = '';
 		for ($c = 0; $c < 7; $c++) {
@@ -136,5 +137,25 @@ function base128_decode($str) {
 		$out .= $part;
 	}
 	$length = strlen($out);
-	return substr($out,$length - $pad);
+	return substr($out, $length - $pad);
+}
+
+function fetch_tidy_dom($string, $charset) {
+	$config = array(
+		'indent' => false,
+		'output-html' => true,
+	);
+
+// Tidy
+	$tidy = new \tidy;
+	$tidy->parseString($string, $config);
+	$tidy->cleanRepair();
+
+	$tidy = (string) $tidy;
+	
+	$dom = new \DOMDocument('1.0');
+	$dom->loadHTML($tidy);
+
+// Output
+	return $dom;
 }

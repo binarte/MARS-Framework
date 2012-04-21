@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://purl.org/NET/erdf/profile">
+ <title>PHP: image2wbmp - Manual</title>
+ <style type="text/css" media="all">
+  @import url("http://static.php.net/www.php.net/styles/site.css");
+  @import url("http://static.php.net/www.php.net/styles/phpnet.css");
+  
+ </style>
+ <!--[if IE]><![if gte IE 6]><![endif]-->
+  <style type="text/css" media="print">
+   @import url("http://static.php.net/www.php.net/styles/print.css");
+  </style>
+ <!--[if IE]><![endif]><![endif]-->
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+ <link rel="shortcut icon" href="http://static.php.net/www.php.net/favicon.ico" />
+ <link rel="contents" href="index.php" />
+ <link rel="index" href="ref.image.php" />
+ <link rel="prev" href="function.image-type-to-mime-type.php" />
+ <link rel="next" href="function.imagealphablending.php" />
+ <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />
+ <link rel="schema.rdfs" href="http://www.w3.org/2000/01/rdf-schema#" />
+ <link rev="canonical" rel="self alternate shorter shorturl shortlink" href="http://php.net/image2wbmp" />
+ <link rel="license" href="http://creativecommons.org/licenses/by/3.0/" about="#content" />
+ <link rel="canonical" href="http://php.net/manual/en/function.image2wbmp.php" />
+ <script type="text/javascript" src="http://static.php.net/www.php.net/userprefs.js"></script>
+ <base href="http://www.php.net/manual/en/function.image2wbmp.php" />
+ <meta http-equiv="Content-language" content="en" />
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var toggleImage = function(elem) {
+        if ($(elem).hasClass("shown")) {
+            $(elem).removeClass("shown").addClass("hidden");
+            $("img", elem).attr("src", "/images/notes-add.gif");
+        }
+        else {
+            $(elem).removeClass("hidden").addClass("shown");
+            $("img", elem).attr("src", "/images/notes-reject.gif");
+        }
+    };
+
+    $(".refsect1 h3.title").each(function() {
+        url = "https://bugs.php.net/report.php?bug_type=Documentation+problem&amp;manpage=" + $(this).parent().parent().attr("id") + "%23" + $(this).parent().attr("id");
+        $(this).parent().prepend("<div class='reportbug'><a href='" + url + "'>Report a bug</a></div>");
+        $(this).prepend("<a class='toggler shown' href='#'><img src='/images/notes-reject.gif' alt='reject note' /></a> ");
+    });
+    $("#usernotes .head").each(function() {
+        $(this).prepend("<a class='toggler shown' href='#'><img src='/images/notes-reject.gif' alt='reject note' /></a> ");
+    });
+    $(".refsect1 h3.title .toggler").click(function() {
+        $(this).parent().siblings().slideToggle("slow");
+        toggleImage(this);
+        return false;
+    });
+    $("#usernotes .head .toggler").click(function() {
+        $(this).parent().next().slideToggle("slow");
+        toggleImage(this);
+        return false;
+    });
+});
+</script>
+
+</head>
+<body>
+
+<div id="headnav">
+ <a href="/" rel="home"><img src="http://static.php.net/www.php.net/images/php.gif"
+ alt="PHP" width="120" height="67" id="phplogo" /></a>
+ <div id="headmenu">
+  <a href="/downloads.php">downloads</a> |
+  <a href="/docs.php">documentation</a> |
+  <a href="/FAQ.php">faq</a> |
+  <a href="/support.php">getting help</a> |
+  <a href="/mailing-lists.php">mailing lists</a> |
+  <a href="/license">licenses</a> |
+  <a href="https://wiki.php.net/">wiki</a> |
+  <a href="https://bugs.php.net/">reporting bugs</a> |
+  <a href="/sites.php">php.net sites</a> |
+  <a href="/links.php">links</a> |
+  <a href="/conferences/">conferences</a> |
+  <a href="/my.php">my php.net</a>
+ </div>
+</div>
+
+<div id="headsearch">
+ <form method="post" action="/search.php" id="topsearch">
+  <p>
+   <span title="Keyboard shortcut: Alt+S (Win), Ctrl+S (Apple)">
+    <span class="shortkey">s</span>earch for
+   </span>
+   <input type="text" name="pattern" value="" size="30" accesskey="s" />
+   <span>in the</span>
+   <select name="show">
+    <option value="all"      >all php.net sites</option>
+    <option value="local"    >this mirror only</option>
+    <option value="quickref" selected="selected">function list</option>
+    <option value="manual"   >online documentation</option>
+    <option value="bugdb"    >bug database</option>
+    <option value="news_archive">Site News Archive</option>
+    <option value="changelogs">All Changelogs</option>
+    <option value="pear"     >just pear.php.net</option>
+    <option value="pecl"     >just pecl.php.net</option>
+    <option value="talks"    >just talks.php.net</option>
+    <option value="maillist" >general mailing list</option>
+    <option value="devlist"  >developer mailing list</option>
+    <option value="phpdoc"   >documentation mailing list</option>
+   </select>
+   <input type="image"
+          src="http://static.php.net/www.php.net/images/small_submit_white.gif"
+          class="submit" alt="search" />
+   <input type="hidden" name="lang" value="en" />
+  </p>
+ </form>
+</div>
+
+<div id="layout_2">
+ <div id="leftbar">
+<!--UdmComment-->
+<ul class="toc">
+ <li class="header home"><a href="index.php">PHP Manual</a></li>
+ <li class="header up"><a href="funcref.php">Function Reference</a></li>
+ <li class="header up"><a href="refs.utilspec.image.php">Image Processing and Generation</a></li>
+ <li class="header up"><a href="book.image.php">GD</a></li>
+ <li class="header up"><a href="ref.image.php">GD and Image Functions</a></li>
+ <li><a href="function.gd-info.php">gd_<span class="w"> </span>info</a></li>
+ <li><a href="function.getimagesize.php">getimagesize</a></li>
+ <li><a href="function.getimagesizefromstring.php">getimagesizefromstring</a></li>
+ <li><a href="function.image-type-to-extension.php">image_<span class="w"> </span>type_<span class="w"> </span>to_<span class="w"> </span>extension</a></li>
+ <li><a href="function.image-type-to-mime-type.php">image_<span class="w"> </span>type_<span class="w"> </span>to_<span class="w"> </span>mime_<span class="w"> </span>type</a></li>
+ <li class="active"><a href="function.image2wbmp.php">image2wbmp</a></li>
+ <li><a href="function.imagealphablending.php">imagealphablending</a></li>
+ <li><a href="function.imageantialias.php">imageantialias</a></li>
+ <li><a href="function.imagearc.php">imagearc</a></li>
+ <li><a href="function.imagechar.php">imagechar</a></li>
+ <li><a href="function.imagecharup.php">imagecharup</a></li>
+ <li><a href="function.imagecolorallocate.php">imagecolorallocate</a></li>
+ <li><a href="function.imagecolorallocatealpha.php">imagecolorallocatealpha</a></li>
+ <li><a href="function.imagecolorat.php">imagecolorat</a></li>
+ <li><a href="function.imagecolorclosest.php">imagecolorclosest</a></li>
+ <li><a href="function.imagecolorclosestalpha.php">imagecolorclosestalpha</a></li>
+ <li><a href="function.imagecolorclosesthwb.php">imagecolorclosesthwb</a></li>
+ <li><a href="function.imagecolordeallocate.php">imagecolordeallocate</a></li>
+ <li><a href="function.imagecolorexact.php">imagecolorexact</a></li>
+ <li><a href="function.imagecolorexactalpha.php">imagecolorexactalpha</a></li>
+ <li><a href="function.imagecolormatch.php">imagecolormatch</a></li>
+ <li><a href="function.imagecolorresolve.php">imagecolorresolve</a></li>
+ <li><a href="function.imagecolorresolvealpha.php">imagecolorresolvealpha</a></li>
+ <li><a href="function.imagecolorset.php">imagecolorset</a></li>
+ <li><a href="function.imagecolorsforindex.php">imagecolorsforindex</a></li>
+ <li><a href="function.imagecolorstotal.php">imagecolorstotal</a></li>
+ <li><a href="function.imagecolortransparent.php">imagecolortransparent</a></li>
+ <li><a href="function.imageconvolution.php">imageconvolution</a></li>
+ <li><a href="function.imagecopy.php">imagecopy</a></li>
+ <li><a href="function.imagecopymerge.php">imagecopymerge</a></li>
+ <li><a href="function.imagecopymergegray.php">imagecopymergegray</a></li>
+ <li><a href="function.imagecopyresampled.php">imagecopyresampled</a></li>
+ <li><a href="function.imagecopyresized.php">imagecopyresized</a></li>
+ <li><a href="function.imagecreate.php">imagecreate</a></li>
+ <li><a href="function.imagecreatefromgd2.php">imagecreatefromgd2</a></li>
+ <li><a href="function.imagecreatefromgd2part.php">imagecreatefromgd2part</a></li>
+ <li><a href="function.imagecreatefromgd.php">imagecreatefromgd</a></li>
+ <li><a href="function.imagecreatefromgif.php">imagecreatefromgif</a></li>
+ <li><a href="function.imagecreatefromjpeg.php">imagecreatefromjpeg</a></li>
+ <li><a href="function.imagecreatefrompng.php">imagecreatefrompng</a></li>
+ <li><a href="function.imagecreatefromstring.php">imagecreatefromstring</a></li>
+ <li><a href="function.imagecreatefromwbmp.php">imagecreatefromwbmp</a></li>
+ <li><a href="function.imagecreatefromxbm.php">imagecreatefromxbm</a></li>
+ <li><a href="function.imagecreatefromxpm.php">imagecreatefromxpm</a></li>
+ <li><a href="function.imagecreatetruecolor.php">imagecreatetruecolor</a></li>
+ <li><a href="function.imagedashedline.php">imagedashedline</a></li>
+ <li><a href="function.imagedestroy.php">imagedestroy</a></li>
+ <li><a href="function.imageellipse.php">imageellipse</a></li>
+ <li><a href="function.imagefill.php">imagefill</a></li>
+ <li><a href="function.imagefilledarc.php">imagefilledarc</a></li>
+ <li><a href="function.imagefilledellipse.php">imagefilledellipse</a></li>
+ <li><a href="function.imagefilledpolygon.php">imagefilledpolygon</a></li>
+ <li><a href="function.imagefilledrectangle.php">imagefilledrectangle</a></li>
+ <li><a href="function.imagefilltoborder.php">imagefilltoborder</a></li>
+ <li><a href="function.imagefilter.php">imagefilter</a></li>
+ <li><a href="function.imagefontheight.php">imagefontheight</a></li>
+ <li><a href="function.imagefontwidth.php">imagefontwidth</a></li>
+ <li><a href="function.imageftbbox.php">imageftbbox</a></li>
+ <li><a href="function.imagefttext.php">imagefttext</a></li>
+ <li><a href="function.imagegammacorrect.php">imagegammacorrect</a></li>
+ <li><a href="function.imagegd2.php">imagegd2</a></li>
+ <li><a href="function.imagegd.php">imagegd</a></li>
+ <li><a href="function.imagegif.php">imagegif</a></li>
+ <li><a href="function.imagegrabscreen.php">imagegrabscreen</a></li>
+ <li><a href="function.imagegrabwindow.php">imagegrabwindow</a></li>
+ <li><a href="function.imageinterlace.php">imageinterlace</a></li>
+ <li><a href="function.imageistruecolor.php">imageistruecolor</a></li>
+ <li><a href="function.imagejpeg.php">imagejpeg</a></li>
+ <li><a href="function.imagelayereffect.php">imagelayereffect</a></li>
+ <li><a href="function.imageline.php">imageline</a></li>
+ <li><a href="function.imageloadfont.php">imageloadfont</a></li>
+ <li><a href="function.imagepalettecopy.php">imagepalettecopy</a></li>
+ <li><a href="function.imagepng.php">imagepng</a></li>
+ <li><a href="function.imagepolygon.php">imagepolygon</a></li>
+ <li><a href="function.imagepsbbox.php">imagepsbbox</a></li>
+ <li><a href="function.imagepsencodefont.php">imagepsencodefont</a></li>
+ <li><a href="function.imagepsextendfont.php">imagepsextendfont</a></li>
+ <li><a href="function.imagepsfreefont.php">imagepsfreefont</a></li>
+ <li><a href="function.imagepsloadfont.php">imagepsloadfont</a></li>
+ <li><a href="function.imagepsslantfont.php">imagepsslantfont</a></li>
+ <li><a href="function.imagepstext.php">imagepstext</a></li>
+ <li><a href="function.imagerectangle.php">imagerectangle</a></li>
+ <li><a href="function.imagerotate.php">imagerotate</a></li>
+ <li><a href="function.imagesavealpha.php">imagesavealpha</a></li>
+ <li><a href="function.imagesetbrush.php">imagesetbrush</a></li>
+ <li><a href="function.imagesetpixel.php">imagesetpixel</a></li>
+ <li><a href="function.imagesetstyle.php">imagesetstyle</a></li>
+ <li><a href="function.imagesetthickness.php">imagesetthickness</a></li>
+ <li><a href="function.imagesettile.php">imagesettile</a></li>
+ <li><a href="function.imagestring.php">imagestring</a></li>
+ <li><a href="function.imagestringup.php">imagestringup</a></li>
+ <li><a href="function.imagesx.php">imagesx</a></li>
+ <li><a href="function.imagesy.php">imagesy</a></li>
+ <li><a href="function.imagetruecolortopalette.php">imagetruecolortopalette</a></li>
+ <li><a href="function.imagettfbbox.php">imagettfbbox</a></li>
+ <li><a href="function.imagettftext.php">imagettftext</a></li>
+ <li><a href="function.imagetypes.php">imagetypes</a></li>
+ <li><a href="function.imagewbmp.php">imagewbmp</a></li>
+ <li><a href="function.imagexbm.php">imagexbm</a></li>
+ <li><a href="function.iptcembed.php">iptcembed</a></li>
+ <li><a href="function.iptcparse.php">iptcparse</a></li>
+ <li><a href="function.jpeg2wbmp.php">jpeg2wbmp</a></li>
+ <li><a href="function.png2wbmp.php">png2wbmp</a></li>
+</ul><!--/UdmComment-->
+
+ </div>
+ <div id="content" class="manual/en">
+<!--UdmComment-->
+<div class="manualnavbar manualnavbar_top">
+ <span class="next">
+  <a href="function.imagealphablending.php">imagealphablending<img src="http://static.php.net/www.php.net/images/caret-r.gif" alt="&gt;" width="11" height="7" /></a>
+ </span>
+ <span class="prev">
+  <a href="function.image-type-to-mime-type.php"><img src="http://static.php.net/www.php.net/images/caret-l.gif" alt="&lt;" width="11" height="7" />image_type_to_mime_type</a>
+ </span>
+ <hr />
+ <span class="lastupdated">[<a href="https://edit.php.net/?project=PHP&amp;perm=en/function.image2wbmp.php">edit</a>] Last updated: Fri, 20 Apr 2012</span>
+ <div class="langchooser">
+  <form action="/manual/change.php" method="get">
+   <p>view this page in </p><fieldset><select name="page">
+    <option value="pt_BR/function.image2wbmp.php">Brazilian Portuguese</option>
+    <option value="zh/function.image2wbmp.php">Chinese (Simplified)</option>
+    <option value="fr/function.image2wbmp.php">French</option>
+    <option value="de/function.image2wbmp.php">German</option>
+    <option value="ja/function.image2wbmp.php">Japanese</option>
+    <option value="pl/function.image2wbmp.php">Polish</option>
+    <option value="ro/function.image2wbmp.php">Romanian</option>
+    <option value="ru/function.image2wbmp.php">Russian</option>
+    <option value="fa/function.image2wbmp.php">Persian</option>
+    <option value="es/function.image2wbmp.php">Spanish</option>
+    <option value="tr/function.image2wbmp.php">Turkish</option>
+    <option value="help-translate.php">Other</option>
+   </select>
+   <input type="image" src="http://static.php.net/www.php.net/images/small_submit.gif" id="changeLangImage" alt="Change language" />
+  </fieldset></form>
+ </div>
+</div>
+<!--/UdmComment-->
+
+<div id="function.image2wbmp" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">image2wbmp</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.5, PHP 5)</p><p class="refpurpose"><span class="refname">image2wbmp</span> &mdash; <span class="dc-title">Output image to browser or file</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.image2wbmp-description">
+  <h3 class="title">Description</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>image2wbmp</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$image</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$filename</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$threshold</code></span>
+  ]] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>image2wbmp()</strong></span> outputs or save a <acronym title="Wireless Bitmap">WBMP</acronym>
+   version of the given <em><code class="parameter">image</code></em>. 
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.image2wbmp-parameters">
+  <h3 class="title">Parameters</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><em><code class="parameter">
+image</code></em></span><dd>
+<p class="para">An image resource, returned by one of the image creation functions,
+such as <span class="function"><a href="function.imagecreatetruecolor.php" class="function">imagecreatetruecolor()</a></span>.</p></dd>
+</dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">filename</code></em></span>
+     <dd>
+
+      <p class="para">
+       Path to the saved file. If not given, the raw image stream will be
+       outputted directly.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">threshold</code></em></span>
+     <dd>
+
+      <p class="para">
+       Threshold value, between 0 and 255 (inclusive).
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.image2wbmp-returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   Returns <strong><code>TRUE</code></strong> on success or <strong><code>FALSE</code></strong> on failure.
+  </p>
+ </div>
+
+ <div class="refsect1 examples" id="refsect1-function.image2wbmp-examples">
+  <h3 class="title">Examples</h3>
+  <p class="para">
+   <div class="example" id="example-2956">
+    <p><strong>Example #1 <span class="function"><strong>image2wbmp()</strong></span> example</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$file&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'php.png'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$image&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">imagecreatefrompng</span><span style="color: #007700">(</span><span style="color: #0000BB">$file</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-Type:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">image_type_to_mime_type</span><span style="color: #007700">(</span><span style="color: #0000BB">IMAGETYPE_WBMP</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">image2wbmp</span><span style="color: #007700">(</span><span style="color: #0000BB">$image</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;output&nbsp;the&nbsp;stream&nbsp;directly<br /></span><span style="color: #0000BB">imagedestroy</span><span style="color: #007700">(</span><span style="color: #0000BB">$image</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 notes" id="refsect1-function.image2wbmp-notes">
+  <h3 class="title">Notes</h3>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <p class="para">
+    WBMP support is only available if PHP was compiled against GD-1.8 or
+    later.
+   </p>
+  </p></blockquote>
+ </div>
+
+ <div class="refsect1 seealso" id="refsect1-function.image2wbmp-seealso">
+  <h3 class="title">See Also</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.imagewbmp.php" class="function" rel="rdfs-seeAlso">imagewbmp()</a> - Output image to browser or file</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><br /><br />
+<div id="usernotes">
+ <div class="head">
+  <span class="action"><a href="/manual/add-note.php?sect=function.image2wbmp&amp;redirect=http://www.php.net/manual/en/function.image2wbmp.php"><img src="http://static.php.net/www.php.net/images/notes-add.gif" alt="add a note" width="13" height="13" class="middle" /></a> <small><a href="/manual/add-note.php?sect=function.image2wbmp&amp;redirect=http://www.php.net/manual/en/function.image2wbmp.php">add a note</a></small></span>
+  <small>User Contributed Notes</small>
+  <strong>image2wbmp</strong>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div></div><br />
+ </div>
+ <div class="cleaner">&nbsp;</div>
+</div>
+
+<div id="footnav">
+   <a href="/source.php?url=/manual/en/function.image2wbmp.php">show source</a> |
+ <a href="/credits.php">credits</a> |
+ <a href="/stats/">stats</a> |
+ <a href="/sitemap.php">sitemap</a> |
+ <a href="/contact.php">contact</a> |
+ <a href="/contact.php#ads">advertising</a> |
+ <a href="/mirrors.php">mirror sites</a>
+</div>
+
+<div id="pagefooter">
+ <div id="copyright">
+  <a href="/copyright.php">Copyright &copy; 2001-2012 The PHP Group</a><br />
+  All rights reserved.
+ </div>
+
+ <div id="thismirror">
+  <a href="/mirror.php">This mirror</a> generously provided by:
+  <a href="http://developer.yahoo.com/">Yahoo! Inc.</a><br />
+  Last updated: Sat Apr 21 15:41:21 2012 EDT
+ </div>
+</div>
+<!--[if IE 6]>
+<script type="text/javascript">
+    /*Load jQuery if not already loaded*/ if(typeof jQuery == 'undefined'){ document.write("<script type=\"text/javascript\"   src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></"+"script>"); var __noconflict = true; }
+    var IE6UPDATE_OPTIONS = {
+        icons_path: "/ie6update/images/"
+    }
+</script>
+<script type="text/javascript" src="/ie6update/ie6update.js"></script>
+<![endif]-->
+</body>
+</html>

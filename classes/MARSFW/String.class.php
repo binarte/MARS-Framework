@@ -18,9 +18,9 @@ namespace MARSFW;
 class String extends ReadableObject implements \ArrayAccess {
 
 	/**
-	 * Decodes an encoded ascii string and return it's equivalent object
-	 * @param string $str Thi ascii-encoded string
-	 * @return String 
+	 * Decodes an RFC2047 encoded ascii string and return it's equivalent object.
+	 * @param string $str The ascii-encoded string
+	 * @return String The encoded object 
 	 * @throws \RuntimeException When the encoding is not valid
 	 * @link http://tools.ietf.org/html/rfc2047
 	 */
@@ -139,9 +139,13 @@ class String extends ReadableObject implements \ArrayAccess {
 	 * @param string $encoding Encoding used by the string
 	 * @param bool $caseSensitive Case sensitivity to be used on string operations
 	 */
-	function __construct($content, $encoding = 'UTF-8', $caseSensitive = false) {
-		if (empty($encoding))
+	function __construct($content, $encoding = null, $caseSensitive = false) {
+		if (strcasecmp($encoding,'auto') == 0){
 			$encoding = \mb_detect_encoding($content);
+		}
+		elseif (empty ($encoding)){
+			$encoding = \mb_internal_encoding();
+		}
 		$this->content = $content;
 		$this->encoding = $encoding;
 		$this->caseSensitive = $caseSensitive;
@@ -154,7 +158,7 @@ class String extends ReadableObject implements \ArrayAccess {
 	 * @return string Content of the string
 	 */
 	function __toString() {
-		return $this->toString('UTF-8');
+		return $this->toString(\mb_internal_encoding() );
 	}
 
 	/**
@@ -164,7 +168,7 @@ class String extends ReadableObject implements \ArrayAccess {
 	 * @return string Content of the string
 	 */
 	function toString($encoding = null) {
-		if ($encoding === null || $encoding == $this->encoding) {
+		if ($encoding === null || strcasecmp($encoding,$this->encoding) == 0 ) {
 			return $this->content;
 		}
 
@@ -180,6 +184,10 @@ class String extends ReadableObject implements \ArrayAccess {
 		return new String($this->toString($encoding), $encoding, $this->caseSensitive);
 	}
 
+	/**
+	 * Encodes the string for RFC2047 ascii output with quoted-printable encoding.
+	 * @return string The string encoded with RFC2047
+	 */
 	function toAscii() {
 		if (!\preg_match('#[\200-\377]#', $this->content)) {
 			return $this->content;
@@ -188,12 +196,19 @@ class String extends ReadableObject implements \ArrayAccess {
 		$qcont = \quoted_printable_encode($this->content);
 		$qcont = \str_replace(array(' ','_'),array('_','=5f'), $qcont);
 		
-		return '=?'.$this->encoding.'?Q?'.$qcont.'?=';
+		return '=?'.\strtoupper($this->encoding).'?Q?'.$qcont.'?=';
 	}
 
+	/**
+	 * Encodes the string for RFC2047 ascii output with base64 encoding.
+	 * Note this will generate a humanly unreadable string that is usually longer than 
+	 * with quoted-printable encoding. Also, this is rarely used, therefore it is 
+	 * possible that poorly implemented clients and servers might not support it.
+	 * @return string The string encoded with RFC2047
+	 */
 	function toAsciiB() {
 		$qcont = \base64_encode($this->content);
-		return '=?'.$this->encoding.'?B?'.$qcont.'?=';
+		return '=?'.\strtoupper($this->encoding).'?B?'.$qcont.'?=';
 	}
 
 	/**
