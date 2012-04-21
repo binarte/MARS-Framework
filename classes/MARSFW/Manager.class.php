@@ -322,8 +322,20 @@ class Manager_ErrorLog {
 					' code="0x' . dechex($ex->getCode()) . '"' .
 					'>'
 			);
-			
-			$this->write('<message>' . $this->escape($ex->getMessage()) . '</message>');
+
+			//fixing php 5.4 bug that prevents trigger_error messages from coming when it 
+			//contains certain characters
+			$bTrace = $ex->getTrace();
+			unset($bTrace[0]);
+
+			$trace = $bTrace[1];
+			if (strcasecmp($trace['function'], 'trigger_error') == 0) {
+				$msg = $trace['args'][0];
+			} else {
+				$msg = $ex->getMessage();
+			}
+
+			$this->write('<message>' . $this->escape($msg) . '</message>');
 			if ($ex instanceof \ErrorException) {
 				$this->write('<severity code="' . $ex->getSeverity() . '">');
 				switch ($ex->getSeverity()) {
@@ -375,11 +387,8 @@ class Manager_ErrorLog {
 				}
 				$this->write('</severity>');
 			} elseif ($ex instanceof Database\Exception) {
-				$this->write('<sql>' . $this->escape($ex->getSql() ) . '</sql>');
+				$this->write('<sql>' . $this->escape($ex->getSql()) . '</sql>');
 			}
-
-			$bTrace = $ex->getTrace();
-			unset($bTrace[0]);
 
 			if (count($bTrace)) {
 				$this->write('<backTrace>');
