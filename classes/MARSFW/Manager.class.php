@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (C) 2012 Vanduir Volpato Maia
  * 
@@ -60,13 +61,13 @@ final class Manager extends Object {
 	 * @var int
 	 */
 	private static $startTime;
-	
+
 	/**
 	 * Define se o gerenciamento simples de erro está ativo.
 	 * @var bool
 	 */
 	private static $simpleError;
-	
+
 	/**
 	 * Define de foi encontrado um erro após a ativação do gerenciamento simples de erro.
 	 * @var bool 
@@ -92,7 +93,7 @@ final class Manager extends Object {
 		self::$ignorableErrors = E_NOTICE | E_USER_NOTICE;
 		self::$deprecatedErrors = E_DEPRECATED | E_USER_DEPRECATED | E_STRICT;
 		self::$logDeprecated = $log_deprecated;
-		
+
 		set_error_handler(__CLASS__ . '::errorHandler');
 		set_exception_handler(__CLASS__ . '::exceptionHandler');
 		error_reporting(0x7fffffff);
@@ -111,7 +112,7 @@ final class Manager extends Object {
 		$className = str_replace('\\', '/', $className);
 		include_once 'classes/' . $className . '.class.php';
 	}
-	
+
 	/**
 	 * Starts the simple error handler.
 	 * The simple error handler allows to handle erros in a quicker, cleaner way, since 
@@ -121,11 +122,11 @@ final class Manager extends Object {
 	 * @see simpleError_end
 	 * @see errorHandler
 	 */
-	public static function simpleError_start(){
+	public static function simpleError_start() {
 		self::$simpleError = true;
 		self::$hasError = false;
 	}
-	
+
 	/**
 	 * Ends the simple error handler and returns the result.
 	 * @return bool <b>TRUE</b> if a error has occurred, <b>FALSE</b> if otherwise.
@@ -134,7 +135,7 @@ final class Manager extends Object {
 	 * @see simpleError_start
 	 * @see errorHandler
 	 */
-	public static function simpleError_end(){
+	public static function simpleError_end() {
 		self::$simpleError = false;
 		return self::$hasError;
 	}
@@ -157,7 +158,7 @@ final class Manager extends Object {
 	 * @see trigger_error
 	 */
 	public static function errorHandler($errno, $errstr, $errfile = null, $errline = null) {
-		if (self::$simpleError){
+		if (self::$simpleError) {
 			self::$hasError = true;
 			return;
 		}
@@ -189,9 +190,8 @@ final class Manager extends Object {
 		if (empty(self::$logh)) {
 			try {
 				self::$logh = new Manager_ErrorLog(self::$paths[0], date('Ymd', self::$startTime));
-			}
-			catch(Exception $ex2){
-				die('Unable to open log file:' . $ex2->getMessage() );
+			} catch (Exception $ex2) {
+				die('Unable to open log file:' . $ex2->getMessage());
 			}
 		}
 
@@ -205,6 +205,7 @@ final class Manager extends Object {
 class Manager_ErrorLog {
 
 	private $handler;
+	private $currentHandler;
 	private $count = 0;
 
 	function __construct($path, $name) {
@@ -213,17 +214,19 @@ class Manager_ErrorLog {
 			mkdir($path, 0777, true);
 		}
 		$filename = $path . $name . '.errors.xml';
+		$lfilename = $path . 'latest.errors.xml';
+		$this->currentHandler = fopen($lfilename, 'w');
+
 		if (!file_exists($filename)) {
 			$this->handler = fopen($path . $name . '.errors.xml', 'w');
-			fwrite($this->handler, '<?xml version="1.0" encoding="UTF-8"?>');
-			fwrite($this->handler, '<errorLog>');
+			$this->write('<?xml version="1.0" encoding="UTF-8"?><errorLog>');
 		} else {
 			$this->handler = fopen($path . $name . '.errors.xml', 'r+');
 			fseek($this->handler, filesize($filename) - strlen('</errorLog>'), SEEK_SET);
+			fwrite($this->currentHandler, '<?xml version="1.0" encoding="UTF-8"?><errorLog>');
 		}
 
-		fwrite($this->handler, '<execution time="' . date(\DateTime::RFC3339) . '">');
-		fwrite($this->handler, '<env>');
+		$this->write('<execution time="' . date(\DateTime::RFC3339) . '"><env>');
 
 		$r = array();
 
@@ -251,15 +254,17 @@ class Manager_ErrorLog {
 		$this->addVars($_COOKIE, '$_COOKIE');
 		$this->addVars($_FILES, '$_FILES');
 		$this->addVars($_ENV, '$_ENV');
-		fwrite($this->handler, '</env>');
-		fwrite($this->handler, '<errors>');
+		$this->write('</env><errors>');
 	}
 
 	function __destruct() {
-		fwrite($this->handler, '</errors>');
-		fwrite($this->handler, '</execution>');
-		fwrite($this->handler, '</errorLog>');
+		$this->write('</errors></execution></errorLog>');
 		fclose($this->handler);
+	}
+
+	private function write($content) {
+		fwrite($this->currentHandler, $content);
+		fwrite($this->handler, $content);
 	}
 
 	private function escape($var) {
@@ -277,30 +282,30 @@ class Manager_ErrorLog {
 		}
 		$varname = ($varname or is_numeric($varname) ) ? ' name="' . $varname . '"' : '';
 
-		fwrite($this->handler, '<var' . $varname . ' type="' . $type . '"');
+		$this->write('<var' . $varname . ' type="' . $type . '"');
 		if (is_array($var)) {
 			$count = count($var);
-			fwrite($this->handler, ' count="' . $count . '"');
+			$this->write(' count="' . $count . '"');
 			if ($recursion and $count) {
-				fwrite($this->handler, '>');
+				$this->write('>');
 				$recursion--;
 				foreach ($var as $key => $value) {
 					$this->addVars($value, $key, $recursion);
 				}
-				fwrite($this->handler, '</var>');
+				$this->write('</var>');
 			} else {
-				fwrite($this->handler, '/>');
+				$this->write('/>');
 			}
 		} else {
 			if (is_null($var)) {
-				fwrite($this->handler, '/>');
+				$this->write('/>');
 			} else {
 				if (!is_string($var) and !is_numeric($var)) {
 					$var = var_export($var, true);
 				}
 
 				$var = $this->escape($var);
-				fwrite($this->handler, ' value="' . $var . '"/>');
+				$this->write(' value="' . $var . '"/>');
 			}
 		}
 	}
@@ -308,76 +313,76 @@ class Manager_ErrorLog {
 	function add(\Exception $ex) {
 		$tagName = get_class($ex);
 		$this->count++;
-		fwrite($this->handler, '<error num="'.$this->count.'">');
+		$this->write('<error num="' . $this->count . '">');
 		while ($ex) {
-			fwrite($this->handler, '<exception class="' . $tagName . '"' .
-				' file="' . $this->escape($ex->getFile()) . '"' .
-				' line="' . $ex->getLine() . '"' .
-				' code="0x' . dechex($ex->getCode() ) . '"' .
-				'>'
+			$this->write('<exception class="' . $tagName . '"' .
+					' file="' . $this->escape($ex->getFile()) . '"' .
+					' line="' . $ex->getLine() . '"' .
+					' code="0x' . dechex($ex->getCode()) . '"' .
+					'>'
 			);
-			fwrite($this->handler, '<message>' . $this->escape($ex->getMessage()) . '</message>');
+			$this->write('<message>' . $this->escape($ex->getMessage()) . '</message>');
 			if ($ex instanceof \ErrorException) {
-				fwrite($this->handler, '<severity code="' . $ex->getSeverity() . '">');
+				$this->write('<severity code="' . $ex->getSeverity() . '">');
 				switch ($ex->getSeverity()) {
 					case E_ERROR:
 					case E_USER_ERROR:
-						fwrite($this->handler, 'E_ERROR');
+						$this->write('E_ERROR');
 						break;
 					case E_WARNING:
 					case E_USER_WARNING:
-						fwrite($this->handler, 'E_WARNING');
+						$this->write('E_WARNING');
 						break;
 					case E_NOTICE:
 					case E_USER_NOTICE:
-						fwrite($this->handler, 'E_NOTICE');
+						$this->write('E_NOTICE');
 						break;
 					case E_DEPRECATED:
 					case E_USER_DEPRECATED:
-						fwrite($this->handler, 'E_DEPRECATED');
+						$this->write('E_DEPRECATED');
 						break;
 
 					case E_STRICT:
-						fwrite($this->handler, 'E_STRICT');
+						$this->write('E_STRICT');
 						break;
 					case E_RECOVERABLE_ERROR:
-						fwrite($this->handler, 'E_RECOVERABLE_ERROR');
+						$this->write('E_RECOVERABLE_ERROR');
 						break;
 
 					case E_PARSE:
-						fwrite($this->handler, 'E_PARSE');
+						$this->write('E_PARSE');
 						break;
 
 					case E_COMPILE_ERROR:
-						fwrite($this->handler, 'E_COMPILE_ERROR');
+						$this->write('E_COMPILE_ERROR');
 						break;
 					case E_COMPILE_WARNING:
-						fwrite($this->handler, 'E_COMPILE_WARNING');
+						$this->write('E_COMPILE_WARNING');
 						break;
 
 					case E_CORE_ERROR:
-						fwrite($this->handler, 'E_CORE_ERROR');
+						$this->write('E_CORE_ERROR');
 						break;
 					case E_CORE_WARNING:
-						fwrite($this->handler, 'E_CORE_WARNING');
+						$this->write('E_CORE_WARNING');
 						break;
 
 					default:
-						fwrite($this->handler, 'E_UNKNOWN');
+						$this->write('E_UNKNOWN');
 						break;
 				}
-				fwrite($this->handler, '</severity>');
+				$this->write('</severity>');
 			} elseif ($ex instanceof Database\Exception) {
-				fwrite($this->handler, '<sql>' . $ex->getSql() . '</sql>');
+				$this->write('<sql>' . $ex->getSql() . '</sql>');
 			}
 
 			$bTrace = $ex->getTrace();
 			unset($bTrace[0]);
 
 			if (count($bTrace)) {
-				fwrite($this->handler, '<backTrace>');
+				$this->write('<backTrace>');
 				foreach ($bTrace as $trace) {
-					fwrite($this->handler, '<trace');
+					$this->write('<trace');
 					if (isset($trace['args'])) {
 						$args = $trace['args'];
 						unset($trace['args']);
@@ -387,30 +392,28 @@ class Manager_ErrorLog {
 
 					foreach ($trace as $key => $value) {
 						$value = $this->escape($value);
-						fwrite($this->handler, ' ' . $key . '="' . $value . '"');
+						$this->write(' ' . $key . '="' . $value . '"');
 					}
 
 					if (isset($args)) {
-						fwrite($this->handler, '>');
+						$this->write('>');
 						foreach ($args as $key => $arg) {
 							$this->addVars($arg, $key);
 						}
-						fwrite($this->handler, '</trace>');
+						$this->write('</trace>');
 					} else {
-						fwrite($this->handler, '/>');
+						$this->write('/>');
 					}
 				}
-				fwrite($this->handler, '</backTrace>');
+				$this->write('</backTrace>');
 			}
 
-			fwrite($this->handler, '</exception>');
+			$this->write('</exception>');
 
 			$ex = $ex->getPrevious();
 		}
-		fwrite($this->handler, '</error>');
+		$this->write('</error>');
 	}
 
 }
-
-
 

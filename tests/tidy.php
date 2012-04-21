@@ -4,15 +4,15 @@ namespace MARSFW;
 
 require '../start.inc.php';
 
-function fetch($loc){
-	$hash = 'data-'.sha1($loc);
-	if (file_exists($hash) ){
+function fetch($loc) {
+	$hash = 'data-' . sha1($loc);
+	if (file_exists($hash)) {
 		return file_get_contents($hash);
 	}
-	
+
 	$f = file_get_contents($loc);
-	$fh = fopen($hash,'w');
-	fwrite($fh,$f);
+	$fh = fopen($hash, 'w');
+	fwrite($fh, $f);
 	fclose($fh);
 	return $f;
 }
@@ -61,10 +61,10 @@ function searchNode(\DomNode $node, $text, $prefix = '') {
 }
 
 function getNodeFromPath(\DOMDocument $d, $path) {
-	preg_match_all ('#/(.*?)\\|([0-9]+)(\[(.*?)\])?#',$path,$matches);
-	unset($matches[0],$matches[3]);
+	preg_match_all('#/(.*?)\\|([0-9]+)(\[(.*?)\])?#', $path, $matches);
+	unset($matches[0], $matches[3]);
 	$path = explode('/', $path);
-	foreach ($matches[1] as $id=>$tagname) {
+	foreach ($matches[1] as $id => $tagname) {
 		$idx = (int) $matches[2][$id];
 		$count = 0;
 		foreach ($d->childNodes as $child) {
@@ -83,11 +83,13 @@ function getNodeFromPath(\DOMDocument $d, $path) {
 }
 
 $out = searchNode($dom, 'imagearc');
-var_dump(searchNode($dom,'imagearc'),searchNode($dom,'toc') );
+var_dump(searchNode($dom, 'imagearc'), searchNode($dom, 'toc'));
 //var_dump ($dom->getElementsByTagName('html')->item(0)->textContent);
+$_SESSION['a'] = new \stdClass;
+a;
 
 $node = getNodeFromPath($dom, "/html|0/body|0/div|2/div|0/ul|0");
-foreach ($node->childNodes as $cn){
-var_dump(array($cn->nodeName,$cn->textContent,$cn->hasAttributes() ? $cn->attributes->getNamedItem('href')->textContent : null ) );
+foreach ($node->childNodes as $cn) {
+	var_dump(array($cn->nodeName, $cn->textContent, $cn->hasAttributes() ? $cn->attributes->getNamedItem('href')->textContent : null));
 }
 
