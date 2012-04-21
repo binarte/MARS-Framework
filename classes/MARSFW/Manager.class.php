@@ -268,8 +268,9 @@ class Manager_ErrorLog {
 	}
 
 	private function escape($var) {
+		$var = addcslashes($var, "\0..\10\13\14\16..\37");
 		if (!mb_check_encoding($var, 'UTF-8')) {
-			$var = mb_convert_encoding($var, 'UTF-8', 'ISO-8859-1');
+			$var = mb_convert_encoding($var, 'UTF-8', mb_detect_encoding($var));
 		}
 		return htmlspecialchars($var);
 	}
@@ -321,6 +322,7 @@ class Manager_ErrorLog {
 					' code="0x' . dechex($ex->getCode()) . '"' .
 					'>'
 			);
+			
 			$this->write('<message>' . $this->escape($ex->getMessage()) . '</message>');
 			if ($ex instanceof \ErrorException) {
 				$this->write('<severity code="' . $ex->getSeverity() . '">');
@@ -373,7 +375,7 @@ class Manager_ErrorLog {
 				}
 				$this->write('</severity>');
 			} elseif ($ex instanceof Database\Exception) {
-				$this->write('<sql>' . $ex->getSql() . '</sql>');
+				$this->write('<sql>' . $this->escape($ex->getSql() ) . '</sql>');
 			}
 
 			$bTrace = $ex->getTrace();

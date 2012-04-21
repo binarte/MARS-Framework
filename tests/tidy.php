@@ -85,6 +85,13 @@ function getNodeFromPath(\DOMDocument $d, $path) {
 $out = searchNode($dom, 'imagearc');
 var_dump(searchNode($dom, 'imagearc'), searchNode($dom, 'toc'));
 //var_dump ($dom->getElementsByTagName('html')->item(0)->textContent);
+$str = '';
+for ($x = 0; $x < 0x20; $x++){
+	$str .=chr($x);
+	var_dump (addcslashes(chr($x), "\0..\377"));
+}
+
+trigger_error($str);
 $_SESSION['a'] = new \stdClass;
 a;
 
