@@ -109,7 +109,7 @@ final class Manager extends Object {
 	}
 
 	public static function loadClass($className) {
-		$className = str_replace('\\', '/', $className);
+		$className = str_replace('\\', '/', $className);		
 		include_once 'classes/' . $className . '.class.php';
 	}
 
@@ -328,9 +328,11 @@ class Manager_ErrorLog {
 			$bTrace = $ex->getTrace();
 			unset($bTrace[0]);
 
-			$trace = $bTrace[1];
-			if (strcasecmp($trace['function'], 'trigger_error') == 0) {
-				$msg = $trace['args'][0];
+			if (
+					!empty($btrace) and
+					strcasecmp($bTrace[1]['function'], 'trigger_error') == 0
+			) {
+				$msg = $bTrace[1]['args'][0];
 			} else {
 				$msg = $ex->getMessage();
 			}

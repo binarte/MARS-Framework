@@ -1,9 +1,3 @@
-/tests/apps.ini
 !/tests/facebook/
 !/tests/fbtest.php
-/tests/oa.php
-/tests/mb.php
-/tests/OA.php
-/tests/accepth.php
-/tests/substr.php
-/tests/DA/
+/tests/apps.ini
